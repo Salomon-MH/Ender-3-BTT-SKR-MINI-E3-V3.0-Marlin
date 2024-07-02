@@ -18,7 +18,7 @@ Most stuff is just connected equal to how it was with the 1.1.4 board, except fo
 
 ## Troubleshooting
 
-###3D Touch hardware & wiring check
+### 3D Touch hardware & wiring check
 
 For troubleshooting, uncomment
 
@@ -45,7 +45,7 @@ e.g. via Pronterface. For me it returns:
 This indicates that everything is working properly.  
 When using `M119`, I've noticed that `z_min` ALWAYS states `TRIGGERED`, while `z_probe` does say `open` when the probe is extended and `TRIGGERED` when it is not extended. This seems to be normal, so don't panic if it's the same for you.
 
-###3D Touch compatibility / version
+### 3D Touch compatibility / version
 I still had issues with my 3D Touch sensor. 
 After another session of continuous googling onto the absoultely last pages of Google I found a [resolution that worked for me](https://www.reddit.com/r/MarlinFirmware/comments/1bygk8h/comment/kzle0me/).
 I had to comment out `BLTOUCH_FORCE_SW_MODE` in the advanced configuration, which seems to indicate "It's an older clone of an older BL.".
