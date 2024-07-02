@@ -1,12 +1,12 @@
 # Ender 3 Marlin w/ BIGTREETECH SKR MINI E3 V3.0 board
 My hardware configuration
 
-	- Creality Ender 3
-	- BIGTREETECH SKR MINI E3 V3.0 replacement board (originally came with Creality 1.1.4 board)
-	- 3D Touch sensor ("3DSWAY" clone) with printed [Adjustable BL-Touch sensor mount](https://www.thingiverse.com/thing:3148733)
-	- Original Creality Ender 3 metal extruder upgrade
-	- Ball bearing filament spool holder upgrade
-	- Regular 0.4mm brass nozzle
+- Creality Ender 3
+- BIGTREETECH SKR MINI E3 V3.0 replacement board (originally came with Creality 1.1.4 board)
+- 3D Touch sensor ("3DSWAY" clone) with printed [Adjustable BL-Touch sensor mount](https://www.thingiverse.com/thing:3148733)
+- Original Creality Ender 3 metal extruder upgrade
+- Ball bearing filament spool holder upgrade
+- Regular 0.4mm brass nozzle
 
 Currently not using a connected raspberry pi or similar board.
 
