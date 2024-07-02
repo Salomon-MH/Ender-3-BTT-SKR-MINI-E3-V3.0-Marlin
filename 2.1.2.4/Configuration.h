@@ -1304,7 +1304,7 @@
  * The probe replaces the Z-MIN endstop and is used for Z homing.
  * (Automatically enables USE_PROBE_FOR_Z_HOMING.)
  */
-#define Z_MIN_PROBE_USES_Z_MIN_ENDSTOP_PIN
+//#define Z_MIN_PROBE_USES_Z_MIN_ENDSTOP_PIN
 
 // Force the use of the probe for Z-axis homing
 #define USE_PROBE_FOR_Z_HOMING
@@ -1331,7 +1331,9 @@
  *and uncomment this (if it isn't already):
     define USE_PROBE_FOR_Z_HOMING
  */
-//#define Z_MIN_PROBE_PIN PC14
+ // Setting this shouldn't be necessary, as \Marlin\src\pins\stm32g0\pins_BTT_SKR_MINI_E3_V3_0.h already has this set to PC14. 
+ // Well, better safe than sorry I guess.
+#define Z_MIN_PROBE_PIN PC14
 
 /**
  * Probe Type
