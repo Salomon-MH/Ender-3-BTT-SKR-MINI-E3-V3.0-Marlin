@@ -63,7 +63,7 @@
 // @section info
 
 // Author info of this build printed to the host during boot and M115
-#define STRING_CONFIG_H_AUTHOR "(BigTreeTech, Ender-3)" // Who made the changes.
+#define STRING_CONFIG_H_AUTHOR "(CUSTOM BIQU MicroProbe V2 - BigTreeTech, Ender-3)" // Who made the changes.
 //#define CUSTOM_VERSION_FILE Version.h // Path from the root directory (no quotes)
 
 /**
@@ -1102,7 +1102,9 @@
   //#define ENDSTOPPULLUP_UMAX
   //#define ENDSTOPPULLUP_VMAX
   //#define ENDSTOPPULLUP_WMAX
-  //#define ENDSTOPPULLUP_ZMIN_PROBE
+  // CUSTOM: From the official documentation of the MicroProbe V2:
+  // "The detection signal is open-drain output, and a pull-up resistor needs to be set."
+  #define ENDSTOPPULLUP_ZMIN_PROBE
 #endif
 
 // Enable pulldown for all endstops to prevent a floating state
@@ -1133,6 +1135,8 @@
 // Mechanical endstop with COM to ground and NC to Signal uses "false" here (most common setup).
 #define X_MIN_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
 #define Y_MIN_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
+// CUSTOM: From Reddit, not sure if this is actually also required. See: https://www.reddit.com/r/BIGTREETECH/comments/169jbq0/biqu_microprobe_marlin_setup
+// TODO: Verify. Not changing "Z_MIN_ENDSTOP_INVERTING" to "true" for now to avoid potential issues.
 #define Z_MIN_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
 #define I_MIN_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
 #define J_MIN_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
@@ -1149,7 +1153,9 @@
 #define U_MAX_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
 #define V_MAX_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
 #define W_MAX_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
-#define Z_MIN_PROBE_ENDSTOP_INVERTING false // Set to true to invert the logic of the probe.
+// CUSTOM: The MicroProbe V2 requires "true" here, see user manual for details. V1 requires "false".
+// Quote: Detection signal line, V1 should be false means high-level triggered, V2 should be true means low-level triggered.
+#define Z_MIN_PROBE_ENDSTOP_INVERTING true // Set to true to invert the logic of the probe.
 
 // Enable this feature if all enabled endstop pins are interrupt-capable.
 // This will remove the need to poll the interrupt pins, saving many CPU cycles.
@@ -1303,10 +1309,12 @@
  * The probe replaces the Z-MIN endstop and is used for Z homing.
  * (Automatically enables USE_PROBE_FOR_Z_HOMING.)
  */
-#define Z_MIN_PROBE_USES_Z_MIN_ENDSTOP_PIN
+// CUSTOM: Disable this option to use a dedicated probe pin instead of the Z_MIN endstop pin.
+// #define Z_MIN_PROBE_USES_Z_MIN_ENDSTOP_PIN
 
 // Force the use of the probe for Z-axis homing
-//#define USE_PROBE_FOR_Z_HOMING
+// CUSTOM: Enable this option to use the probe for Z homing.
+#define USE_PROBE_FOR_Z_HOMING
 
 /**
  * Z_MIN_PROBE_PIN
@@ -1321,7 +1329,15 @@
  *    - Normally-closed (NC) also connect to GND.
  *    - Normally-open (NO) also connect to 5V.
  */
-//#define Z_MIN_PROBE_PIN -1
+// CUSTOM: For the BTT SKR Mini E3 V3.0 board with a MicroProbe V2 probe, the Z_MIN_PROBE_PIN is PC14.
+// This is already defined in \Marlin\src\pins\stm32g0\pins_BTT_SKR_MINI_E3_V3_0.h, so I'm not redefining it here.
+// #define Z_MIN_PROBE_PIN PC14
+/** From https://www.reddit.com/r/ender3/comments/1093ib3/bl_touch_and_skr_mini_e3_v3/:
+ * [...] use the probe pin instead of the endstop pin. Comment out this:
+ *   //#define Z_MIN_PROBE_USES_Z_MIN_ENDSTOP_PIN 
+ *   and uncomment this (if it isn't already):
+ *   define USE_PROBE_FOR_Z_HOMING
+*/
 
 /**
  * Probe Type
@@ -1341,7 +1357,8 @@
  * A Fix-Mounted Probe either doesn't deploy or needs manual deployment.
  *   (e.g., an inductive probe or a nozzle-based probe-switch.)
  */
-//#define FIX_MOUNTED_PROBE
+// CUSTOM: I have switched from a BLTouch probe to a MicroProbe V2 probe. It does deploy and stow, but not with a servo, so it counts as a fixed probe for Marlin's purposes.
+#define FIX_MOUNTED_PROBE
 
 /**
  * Use the nozzle as the probe, as with a conductive
@@ -1512,7 +1529,8 @@
  *     |    [-]    |
  *     O-- FRONT --+
  */
-#define NOZZLE_TO_PROBE_OFFSET { 10, 10, 0 }
+// I am using the metal mount for the Ender 3 that came with the MicroProbe V2. Measure yours by putting the nozzle to X0 Y0 and measuring the probe offset when at the same position.
+#define NOZZLE_TO_PROBE_OFFSET { -42, -5, 0 }
 
 // Most probes should stay away from the edges of the bed, but
 // with NOZZLE_AS_PROBE this can be negative for a wider probing area.
@@ -1558,9 +1576,11 @@
  * Probe Enable / Disable
  * The probe only provides a triggered signal when enabled.
  */
-//#define PROBE_ENABLE_DISABLE
+// CUSTOM: According to the guide of the MicroProbe V2, uncomment this.
+#define PROBE_ENABLE_DISABLE
 #if ENABLED(PROBE_ENABLE_DISABLE)
-  //#define PROBE_ENABLE_PIN -1   // Override the default pin here
+  // CUSTOM: The PIN is already correctly defined for the board in the pins file (pins_BTT_SKR_MINI_E3_V3_0.h).
+  //#define PROBE_ENABLE_PIN SERVO0_PIN   // Override the default pin here
 #endif
 
 /**
@@ -1601,7 +1621,8 @@
 #define Z_PROBE_OFFSET_RANGE_MAX 20
 
 // Enable the M48 repeatability test to test probe accuracy
-//#define Z_MIN_PROBE_REPEATABILITY_TEST
+// CUSTOM: Enable this to test the repeatability of the Z-probe (MicroProbe V2).
+#define Z_MIN_PROBE_REPEATABILITY_TEST
 
 // Before deploy/stow pause for user confirmation
 //#define PAUSE_BEFORE_DEPLOY_STOW
@@ -1904,11 +1925,12 @@
  *   leveling in steps so you can manually adjust the Z height at each grid-point.
  *   With an LCD controller the process is guided step-by-step.
  */
+// CUSTOM: Using bilinear bed leveling with a probe.
 //#define AUTO_BED_LEVELING_3POINT
 //#define AUTO_BED_LEVELING_LINEAR
-//#define AUTO_BED_LEVELING_BILINEAR
+#define AUTO_BED_LEVELING_BILINEAR
 //#define AUTO_BED_LEVELING_UBL
-#define MESH_BED_LEVELING
+//#define MESH_BED_LEVELING
 
 /**
  * Commands to execute at the end of G29 probing.
@@ -2123,7 +2145,8 @@
  * - Allows Z homing only when XY positions are known and trusted.
  * - If stepper drivers sleep, XY homing may be required again before Z homing.
  */
-//#define Z_SAFE_HOMING
+// CUSTOM: Using a Z probe for homing, so enabling Z_SAFE_HOMING.
+#define Z_SAFE_HOMING
 
 #if ENABLED(Z_SAFE_HOMING)
   #define Z_SAFE_HOMING_X_POINT X_CENTER  // (mm) X point for Z homing
