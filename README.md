@@ -22,7 +22,13 @@ Most stuff is just connected equal to how it was with the 1.1.4 board, except fo
 3D Touch sensor is currently connected to the 5pin port.
 
 ### 2.1.2.6
-MicroProbe V2 is also connected to the 5pin port.
+MicroProbe V2 is partially connected to the 5pin probe port and partially to the Z-Stop port.
+
+- The lower 3 pins are connected to the Z-Probe port (PA1/PWR/GND)
+- The upper 2 pins (black & white wires) are connected to the Z-Stop port
+
+The reason for the different wiring is that the MicroProbe V2 needs a strong pullup, which does not work with the Z-Homing pin.  
+I used the same cable as the BLTouch before, but switched the top two of the 5 pins to Z-Stop. That's it basically.
 
 ## Troubleshooting
 

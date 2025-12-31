@@ -1137,7 +1137,7 @@
 #define Y_MIN_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
 // CUSTOM: From Reddit, not sure if this is actually also required. See: https://www.reddit.com/r/BIGTREETECH/comments/169jbq0/biqu_microprobe_marlin_setup
 // TODO: Verify. Not changing "Z_MIN_ENDSTOP_INVERTING" to "true" for now to avoid potential issues.
-#define Z_MIN_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
+#define Z_MIN_ENDSTOP_INVERTING true // Set to true to invert the logic of the endstop.
 #define I_MIN_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
 #define J_MIN_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
 #define K_MIN_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
@@ -1309,8 +1309,8 @@
  * The probe replaces the Z-MIN endstop and is used for Z homing.
  * (Automatically enables USE_PROBE_FOR_Z_HOMING.)
  */
-// CUSTOM: Disable this option to use a dedicated probe pin instead of the Z_MIN endstop pin.
-// #define Z_MIN_PROBE_USES_Z_MIN_ENDSTOP_PIN
+// CUSTOM: The MicroProbe V2 needs a strong pullup, which does not work with the Z-Homing PIN. Use the Z_MIN endstop pin. for the white/black wire instead.
+#define Z_MIN_PROBE_USES_Z_MIN_ENDSTOP_PIN
 
 // Force the use of the probe for Z-axis homing
 // CUSTOM: Enable this option to use the probe for Z homing.
